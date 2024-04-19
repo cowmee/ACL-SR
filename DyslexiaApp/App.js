@@ -1,62 +1,28 @@
-import React, { useState } from "react";
-import { StyleSheet, View, TouchableOpacity, Dimensions } from "react-native";
-import { Navigation } from "react-native-navigation";
+import React from "react";
+import "react-native-gesture-handler";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-// constants
-const { width, height } = Dimensions.get("screen");
-const colors = ["green", "blue", "red", "orange", "yellow"];
+// // import screens
+import MainMenuScreen from "./screens/MainMenu.js";
+import buggiesScreen from "./screens/buggies.js";
 
-const App = () => {
-  const [currentColorIndex, setCurrentColorIndex] = useState(0);
+// navigation constants
+const Stack = createNativeStackNavigator();
 
-  // changes color of buttons when pressed
-  const colorChange = () => {
-    setCurrentColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
-    console.log(colors[currentColorIndex]);
-  };
-
-  const navButton = () => {
-    return (
-      <TouchableOpacity
-        style={[styles.button, { backgroundColor: colors[currentColorIndex] }]}
-        onPress={colorChange()}
-      />
-    );
-  };
-
+function MyStack() {
   return (
-    <View style={styles.container}>
-      <View style={styles.titleContainer}></View>
-      <View style={styles.buttonContainer}>
-        {navButton()}
-        {navButton()}
-        {navButton()}
-      </View>
-      <View style={styles.bottomContainer}></View>
-    </View>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="MainMenu" component={MainMenuScreen} />
+      <Stack.Screen name="Buggies" component={buggiesScreen} />
+    </Stack.Navigator>
   );
-};
+}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#51c9ed",
-    flexDirection: "column",
-    padding: 20,
-  },
-  titleContainer: {
-    flex: 4,
-  },
-  buttonContainer: {
-    flex: 5,
-    justifyContent: "space-around",
-    alignItems: "center",
-  },
-  bottomContainer: { flex: 0.5 },
-  button: {
-    height: height * 0.1,
-    width: width * 0.8,
-  },
-});
-
-export default App;
+export default function App() {
+  return (
+    <NavigationContainer>
+      <MyStack />
+    </NavigationContainer>
+  );
+}
