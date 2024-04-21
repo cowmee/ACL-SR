@@ -2,6 +2,13 @@ import React, { useState } from "react";
 import { Dimensions } from "react-native";
 const { width, height } = Dimensions.get("screen");
 
+import {isPaused} from "../entities/mover"
+
+export let restartState = false; 
+export const setRestartState = (value) => {
+  restartState = value;
+};
+
 // variables for calculating new position
 let newX;
 let newY;
@@ -43,8 +50,6 @@ const restart = (mover) => {
   ySpeed = (Math.random() * range + min) * (Math.random() < 0.5 ? -1 : 1);
 
   mover.visible = true;
-
-  //console.log(xSpeed, ",", ySpeed);
 };
 
 // moves mover across screen
@@ -57,10 +62,12 @@ const movement = (entities, { time }) => {
     mover.position[0] < 0 - x ||
     mover.position[0] > width + x ||
     mover.position[1] < 0 - x ||
-    mover.position[1] > height + x
+    mover.position[1] > height + x ||
+    restartState == true
   ) {
     restart(mover);
-  } else {
+    restartState = false;
+  } else if (isPaused == false) {
     // Calculate the new position based on elapsed time
     newX = mover.position[0] + xSpeed * time.delta;
     newY = mover.position[1] + ySpeed * time.delta;

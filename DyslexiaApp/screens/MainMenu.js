@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { useFocusEffect } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
+import LottieView from "lottie-react-native";
 
 const { width, height } = Dimensions.get("screen");
 const colors = ["#d86234", "#F08700", "#F49F0A", "#EFCA08", "#ffeb37"];
@@ -55,7 +56,7 @@ const MainMenu = ({ navigation }) => {
           direction="alternate"
           duration={2000}
         >
-          Dyslexia App
+          Dyslexia App 🤩
         </Animatable.Text>
       </View>
       {/* button view */}
@@ -78,8 +79,10 @@ const MainMenu = ({ navigation }) => {
               styles.button,
               { backgroundColor: colors[currentColorIndex] },
             ]}
-            onPress={colorChange}
-          />
+            onPress={() => navigation.navigate("Memory")}
+          >
+            <Text style={styles.buttonText}>Memory🧠</Text>
+          </TouchableOpacity>
         </Animatable.View>
 
         <Animatable.View ref={thirdButtonRef}>
@@ -88,8 +91,10 @@ const MainMenu = ({ navigation }) => {
               styles.button,
               { backgroundColor: colors[currentColorIndex] },
             ]}
-            onPress={colorChange}
-          />
+            onPress={() => navigation.navigate("Fishies")}
+          >
+            <Text style={styles.buttonText}>Fish.</Text>
+          </TouchableOpacity>
         </Animatable.View>
       </View>
     </View>

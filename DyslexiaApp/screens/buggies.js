@@ -9,10 +9,10 @@ import {
   StatusBar,
   AppRegistry,
 } from "react-native";
+import LottieView from "lottie-react-native";
 
 // GameEngine imports
 import { GameEngine } from "react-native-game-engine";
-import Matter from "matter-js";
 
 // systems
 import bugMove from "../systems/bugMove";
@@ -21,35 +21,33 @@ import bugMove from "../systems/bugMove";
 import Mover from "../../DyslexiaApp/entities/mover";
 
 // other constants
-const engine = Matter.Engine.create({ enableSleeping: false });
-const world = engine.world;
+const { width, height } = Dimensions.get("screen");
+const grassBG = require("../assets/animations/grassBGAnimation.json");
 
 // buggies game!
 const Buggies = ({ navigation }) => {
-  console.log(width, ",", height);
-
+  console.log("screen dimensions: " + width, ",", height);
   return (
     <View style={styles.container}>
-      <View style={styles.gameEngineContainer}>
-        <TouchableOpacity
-          style={[styles.backButton]}
-          onPress={() => navigation.navigate("MainMenu")}
-        />
-        <GameEngine
-          systems={[]}
-          // entities have a unique id (required)
-          // need to pass renderer component to display entity
-          entities={{
-            MOVER: {
-              // default starting position
-              position: [width / 2, height / 2],
-              renderer: <Mover />,
-            },
-          }}
-        >
-          <StatusBar hidden={true} />
-        </GameEngine>
-      </View>
+      <LottieView style={styles.BGAnimation} source={grassBG} autoPlay loop />
+      <TouchableOpacity
+        style={styles.backButton}
+        onPress={() => navigation.navigate("MainMenu")}
+      />
+      <GameEngine
+        systems={[bugMove]}
+        // entities have a unique id (required)
+        // need to pass renderer component to display entity
+        entities={{
+          MOVER: {
+            // default starting position
+            position: [width / 2, height / 2],
+            renderer: <Mover />,
+          },
+        }}
+      >
+        <StatusBar hidden={true} />
+      </GameEngine>
     </View>
   );
 };
@@ -58,10 +56,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  menuContainer: {
-    padding: 30,
-    flex: 1,
-    backgroundColor: "gray",
+  BGAnimation: {
+    position: "absolute",
+    top: 0,
+    height: "100%",
   },
   backButton: {
     backgroundColor: "red",
@@ -71,10 +69,6 @@ const styles = StyleSheet.create({
     width: width * 0.2,
     borderRadius: 20,
     borderWidth: 6,
-  },
-  gameEngineContainer: {
-    flex: 7,
-    backgroundColor: "#51c9ed",
   },
 });
 
